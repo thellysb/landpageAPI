@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Landing Page - Julia</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background: url('https://via.placeholder.com/600x800') no-repeat center center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .card {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 2rem 1.5rem;
+      border-radius: 20px;
+      max-width: 320px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .profile-pic {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid #ff007f;
+      object-fit: cover;
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .name-status {
+      margin-top: 50px;
+      font-size: 1.4rem;
+    }
+
+    .name-status span {
+      font-weight: bold;
+      color: #ff00cc;
+    }
+
+    .status {
+      color: #00ff00;
+      font-weight: bold;
+    }
+
+    .info {
+      margin-top: 0.8rem;
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+
+    .highlight {
+      color: yellow;
+      font-weight: bold;
+    }
+
+    .cta-button {
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.2rem;
+      background: linear-gradient(to right, #ff007f, #ff9900);
+      border: none;
+      border-radius: 30px;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    .cta-button:hover {
+      opacity: 0.9;
+    }
+
+    .footer {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: #ffcc00;
+    }
+
+    .timer {
+      color: #ff4444;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="https://via.placeholder.com/80" alt="Julia" class="profile-pic" />
+    <div class="name-status">
+      <span>Julia</span> <span class="status">● Online</span>
+    </div>
+    <div class="info">
+      ⏱ Tempo médio de resposta: <strong>3 minutos</strong><br />
+      📍 <span>Próximo a você</span><br /><br />
+      Moro em <span class="highlight" id="cidade">sua cidade</span> e eu respondo todos que me chamam 🔥
+    </div>
+    <button class="cta-button" onclick="window.location.href='https://www.seulink.com'">
+      💬 Falar com Julia Agora
+    </button>
+    <div class="footer">
+      ⚡ A <span class="highlight">Promoção</span> termina em <span class="timer" id="contador">09m 00s</span>
+    </div>
+  </div>
+
+  <script>
+    // === Contador regressivo ===
+    let tempoTotal = 9 * 60;
+
+    function atualizarContador() {
+      const contador = document.getElementById("contador");
+
+      if (tempoTotal <= 0) {
+        contador.textContent = "00m 00s";
+        window.location.href = "https://www.seulink.com"; // redireciona ao fim
+        return;
+      }
+
+      const minutos = Math.floor(tempoTotal / 60);
+      const segundos = tempoTotal % 60;
+
+      contador.textContent = `${String(minutos).padStart(2, '0')}m ${String(segundos).padStart(2, '0')}s`;
+
+      tempoTotal--;
+    }
+
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
+
+    // === API de geolocalização ===
+    fetch('https://ipapi.co/json/')
+      .then(response => response.json())
+      .then(data => {
+        const cidade = data.city;
+        document.getElementById('cidade').textContent = cidade || 'sua cidade';
+      })
+      .catch(() => {
+        document.getElementById('cidade').textContent = 'sua cidade';
+      });
+  </script>
+</body>
+</html>
